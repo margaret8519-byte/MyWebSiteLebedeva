@@ -1,0 +1,2980 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-портфолио | Маргарита Лебедева</title>
+
+  <!--
+  Структура проекта:
+  /project
+  ├── index.html
+  ├── /images
+  │   ├── avatar.jpg
+  │   └── /works
+  │       ├── work1.jpg
+  │       ├── work2.jpg
+  │       ├── work3.jpg
+  │       ├── work4.jpg
+  │       └── work5.jpg
+  ├── /videos
+  │   ├── video1.mp4
+  │   ├── video2.mp4
+  │   └── /previews
+  │       ├── preview1.jpg
+  │       └── preview2.jpg
+  └── /presentations
+      ├── project1.pdf
+      └── project2.pdf
+  -->
+
+  <style>
+    /* =====================================================
+       ДИЗАЙН-СИСТЕМА: ТЁМНЫЙ AI FUTURE + CANVA-LIKE ДЕТАЛИ
+    ===================================================== */
+    :root {
+      --accent: #7C3AED;
+      --accent-2: #22D3EE;
+      --accent-3: #D1FAE5;
+      --theme-a: #7C3AED;
+      --theme-b: #22D3EE;
+      --theme-c: #D1FAE5;
+      --theme-glow: rgba(124, 58, 237, 0.42);
+
+      --dark-1: #071B4A;
+      --dark-2: #0B2A6F;
+      --dark-3: #123B8C;
+      --glass: rgba(16, 42, 104, 0.56);
+      --glass-strong: rgba(15, 45, 116, 0.78);
+      --white: #FFFFFF;
+      --text: #F8FAFC;
+      --soft-text: #D7E1F4;
+      --muted: #94A3B8;
+      --line: rgba(255, 255, 255, 0.15);
+
+      --radius: 28px;
+      --shadow: 0 18px 70px rgba(0, 0, 0, 0.34);
+      --shadow-neon: 0 0 40px var(--theme-glow);
+      --transition: 0.3s ease;
+      --max-width: 1220px;
+      --font-main: -apple-system, "Segoe UI", Roboto, sans-serif;
+      --font-script: "Segoe Script", "Monotype Corsiva", "Brush Script MT", cursive;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 104px;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font-main);
+      color: var(--text);
+      background: linear-gradient(135deg, #072567 0%, #0C4AA2 38%, #0F6CBD 68%, #14A5C8 100%);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img,
+    video,
+    iframe,
+    embed {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* =====================================================
+       ГЛОБАЛЬНЫЙ ФОН: ТЁМНЫЙ ГРАДИЕНТ, СЕТКА, ГЛОУ
+    ===================================================== */
+    .future-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--theme-b) 44%, transparent), transparent 30%),
+        radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--theme-a) 38%, transparent), transparent 30%),
+        radial-gradient(circle at 50% 54%, rgba(255,255,255,0.10), transparent 26%),
+        radial-gradient(circle at 50% 86%, rgba(209, 250, 229, 0.30), transparent 36%),
+        linear-gradient(135deg, #072567 0%, #0C4AA2 34%, #1182CC 64%, #13A3C4 100%);
+      transition: background 0.65s ease;
+    }
+
+    .future-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.40;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 78%);
+    }
+
+    .future-bg::after {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      opacity: 0.72;
+      background:
+        conic-gradient(from 180deg at 50% 50%, transparent, color-mix(in srgb, var(--theme-a) 24%, transparent), transparent, color-mix(in srgb, var(--theme-b) 20%, transparent), transparent);
+      animation: rotateAura 24s linear infinite;
+    }
+
+    @keyframes rotateAura {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .scan-lines {
+      position: fixed;
+      inset: 0;
+      z-index: -8;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image: linear-gradient(transparent 0 94%, rgba(255,255,255,0.12) 95%);
+      background-size: 100% 9px;
+      mix-blend-mode: screen;
+    }
+
+    .cursor-glow {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--theme-b) 24%, transparent), transparent 68%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: opacity var(--transition);
+      opacity: 0.92;
+      mix-blend-mode: screen;
+    }
+
+    /* =====================================================
+       ОБЪЕКТЫ ТОЛЬКО ПО КРАЯМ: НЕОН, КРАПИНКИ, ЛЕНТЫ
+    ===================================================== */
+    .edge-decor {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .edge-object {
+      position: absolute;
+      width: var(--size);
+      height: var(--size);
+      opacity: 0.78;
+      transform: rotate(var(--rotate));
+      animation: edgeFloat var(--duration) ease-in-out infinite;
+      animation-delay: var(--delay);
+    }
+
+    .edge-object::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: var(--shape-radius);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 34%, transparent), color-mix(in srgb, var(--theme-b) 24%, transparent)),
+        rgba(255,255,255,0.04);
+      box-shadow: 0 0 32px color-mix(in srgb, var(--theme-a) 26%, transparent);
+      backdrop-filter: blur(10px);
+    }
+
+    .edge-object::after {
+      content: attr(data-symbol);
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: rgba(255,255,255,0.82);
+      font-size: calc(var(--size) * 0.36);
+      font-weight: 900;
+      text-shadow: 0 0 16px var(--theme-b);
+    }
+
+    @keyframes edgeFloat {
+      0%, 100% {
+        transform: translate3d(0, 0, 0) rotate(var(--rotate)) scale(1);
+      }
+      50% {
+        transform: translate3d(var(--move-x), var(--move-y), 0) rotate(calc(var(--rotate) + 12deg)) scale(1.06);
+      }
+    }
+
+    .edge-dot {
+      position: absolute;
+      width: var(--dot);
+      height: var(--dot);
+      border-radius: 50%;
+      background: var(--dot-color);
+      box-shadow: 0 0 18px var(--dot-color);
+      opacity: 0.7;
+      animation: dotRise var(--duration) linear infinite;
+      animation-delay: var(--delay);
+    }
+
+    @keyframes dotRise {
+      0% {
+        transform: translate3d(0, 105vh, 0) scale(0.7);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.74;
+      }
+      100% {
+        transform: translate3d(var(--move-x), -15vh, 0) scale(1.18);
+        opacity: 0;
+      }
+    }
+
+
+    .center-decor {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .float-orb,
+    .data-shard,
+    .energy-ring {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.88;
+      will-change: transform, opacity;
+    }
+
+    .float-orb {
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.22) 18%, color-mix(in srgb, var(--theme-b) 28%, transparent) 38%, transparent 72%),
+        radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--theme-a) 24%, transparent), transparent 62%);
+      box-shadow:
+        0 0 40px color-mix(in srgb, var(--theme-b) 26%, transparent),
+        0 0 80px color-mix(in srgb, var(--theme-a) 18%, transparent);
+      filter: blur(0.2px);
+      animation: midFloat var(--duration) ease-in-out infinite;
+      animation-delay: var(--delay);
+    }
+
+    .float-orb::before {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 50%;
+      opacity: 0.58;
+    }
+
+    .data-shard {
+      width: var(--w);
+      height: var(--h);
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 22%, transparent), color-mix(in srgb, var(--theme-b) 22%, transparent)),
+        rgba(255,255,255,0.08);
+      box-shadow:
+        0 0 36px color-mix(in srgb, var(--theme-a) 18%, transparent),
+        inset 0 0 22px rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      transform: rotate(var(--rotate));
+      animation: shardFloat var(--duration) ease-in-out infinite;
+      animation-delay: var(--delay);
+    }
+
+    .data-shard::before,
+    .data-shard::after {
+      content: "";
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.08), color-mix(in srgb, var(--theme-b) 36%, transparent), rgba(255,255,255,0.08));
+      box-shadow: 0 0 18px color-mix(in srgb, var(--theme-b) 20%, transparent);
+    }
+
+    .data-shard::before { top: 18px; }
+    .data-shard::after { top: 34px; }
+
+    .energy-ring {
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--theme-b) 34%, transparent);
+      box-shadow:
+        0 0 24px color-mix(in srgb, var(--theme-b) 22%, transparent),
+        inset 0 0 24px color-mix(in srgb, var(--theme-a) 18%, transparent);
+      animation: ringPulse var(--duration) ease-in-out infinite;
+      animation-delay: var(--delay);
+    }
+
+    .energy-ring::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      border: 1px dashed color-mix(in srgb, var(--theme-a) 28%, transparent);
+    }
+
+    @keyframes midFloat {
+      0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: 0.62; }
+      50% { transform: translate3d(var(--move-x), var(--move-y), 0) scale(1.08); opacity: 1; }
+    }
+
+    @keyframes shardFloat {
+      0%, 100% { transform: translate3d(0,0,0) rotate(var(--rotate)); opacity: 0.58; }
+      50% { transform: translate3d(var(--move-x), var(--move-y), 0) rotate(calc(var(--rotate) + 10deg)); opacity: 0.96; }
+    }
+
+    @keyframes ringPulse {
+      0%, 100% { transform: translate3d(0,0,0) scale(0.96); opacity: 0.38; }
+      50% { transform: translate3d(var(--move-x), var(--move-y), 0) scale(1.08); opacity: 0.78; }
+    }
+
+    .page-shell {
+      width: min(100% - 40px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header,
+    main,
+    .site-footer {
+      position: relative;
+      z-index: 3;
+    }
+
+    .section {
+      position: relative;
+      padding: 112px 0;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+      isolation: isolate;
+    }
+
+    .section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 44px;
+      z-index: -1;
+      width: min(88vw, 1120px);
+      height: 260px;
+      border-radius: 999px;
+      background: radial-gradient(ellipse, color-mix(in srgb, var(--theme-a) 28%, transparent), transparent 68%);
+      filter: blur(18px);
+      transform: translateX(-50%);
+      transition: background 0.65s ease;
+    }
+
+    .section-transition {
+      position: absolute;
+      left: 50%;
+      top: -34px;
+      z-index: -1;
+      width: min(94vw, 1180px);
+      height: 86px;
+      border-radius: 999px;
+      background:
+        linear-gradient(90deg, transparent, color-mix(in srgb, var(--theme-a) 30%, transparent), color-mix(in srgb, var(--theme-b) 26%, transparent), transparent);
+      filter: blur(2px);
+      opacity: 0.78;
+      transform: translateX(-50%) rotate(-1deg);
+      transition: background 0.65s ease;
+    }
+
+    .section-title {
+      margin-bottom: 18px;
+      font-family: var(--font-script);
+      font-size: clamp(48px, 6.4vw, 78px);
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: transparent;
+      background: linear-gradient(100deg, #FFFFFF 0%, var(--theme-b) 32%, var(--theme-a) 62%, #FDE68A 100%);
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px color-mix(in srgb, var(--theme-a) 34%, transparent));
+      animation: titleFlow 5s ease-in-out infinite;
+      transition: background 0.65s ease, filter 0.65s ease;
+    }
+
+    @keyframes titleFlow {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .section-subtitle {
+      max-width: 780px;
+      margin-bottom: 36px;
+      color: var(--soft-text);
+      font-size: 19px;
+    }
+
+    .script-name {
+      position: relative;
+      z-index: 10;
+      display: inline-block;
+      padding: 8px 0 14px;
+      font-family: var(--font-script);
+      font-size: clamp(58px, 8vw, 92px);
+      line-height: 0.96;
+      font-weight: 700;
+      letter-spacing: -0.065em;
+      color: transparent;
+      background: linear-gradient(100deg, #FFFFFF 0%, #BAE6FD 24%, #38BDF8 48%, #7C3AED 74%, #C4B5FD 100%);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter:
+        drop-shadow(0 0 16px rgba(56, 189, 248, 0.35))
+        drop-shadow(0 0 30px rgba(124, 58, 237, 0.26));
+      animation: titleFlow 5.4s ease-in-out infinite;
+    }
+
+    .script-name::after {
+      content: "";
+      position: absolute;
+      left: 4%;
+      right: 4%;
+      bottom: 4px;
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.0), rgba(56, 189, 248, 0.26), rgba(124, 58, 237, 0.22), rgba(56, 189, 248, 0.0));
+      filter: blur(8px);
+      z-index: -1;
+    }
+
+    .card {
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.07)),
+        radial-gradient(circle at top right, color-mix(in srgb, var(--theme-a) 22%, transparent), transparent 44%),
+        rgba(19, 57, 132, 0.62);
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.30);
+      backdrop-filter: blur(24px);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background 0.65s ease;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.20) 43%, transparent 70%);
+      opacity: 0;
+      transform: translateX(-100%);
+      transition: opacity var(--transition), transform 0.8s ease;
+      pointer-events: none;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: calc(var(--radius) - 1px);
+      border: 1px solid color-mix(in srgb, var(--theme-b) 22%, transparent);
+      opacity: 0.66;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: color-mix(in srgb, var(--theme-b) 52%, transparent);
+      box-shadow: var(--shadow), 0 0 54px color-mix(in srgb, var(--theme-b) 24%, transparent), var(--shadow-neon);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+      transform: translateX(100%);
+    }
+
+    .soft-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 18px;
+      padding: 10px 16px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      color: #FFFFFF;
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 44%, transparent), color-mix(in srgb, var(--theme-b) 30%, transparent)),
+        rgba(255,255,255,0.09);
+      box-shadow: 0 0 40px color-mix(in srgb, var(--theme-a) 24%, transparent);
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      backdrop-filter: blur(18px);
+      transition: background 0.65s ease;
+    }
+
+    .button,
+    .ghost-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-weight: 850;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), background 0.65s ease, border-color var(--transition);
+    }
+
+    .button {
+      border: 0;
+      color: var(--white);
+      background:
+        linear-gradient(135deg, var(--theme-a), var(--theme-b));
+      box-shadow: 0 18px 48px color-mix(in srgb, var(--theme-a) 36%, transparent), 0 0 28px color-mix(in srgb, var(--theme-b) 22%, transparent);
+    }
+
+    .button:hover,
+    .ghost-button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 46px color-mix(in srgb, var(--theme-b) 32%, transparent);
+    }
+
+    .ghost-button {
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(18px);
+    }
+
+    /* =====================================================
+       CANVA-LIKE ЭЛЕМЕНТЫ: ЛЕНТЫ, ПЛАШКИ, МАРКЕРЫ
+    ===================================================== */
+    .design-tag {
+      position: absolute;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 15px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 18px;
+      color: #FFFFFF;
+      background: rgba(255,255,255,0.10);
+      box-shadow: 0 16px 42px rgba(0,0,0,0.22);
+      backdrop-filter: blur(16px);
+      font-weight: 900;
+      transform: rotate(var(--rotate));
+    }
+
+    .design-tag::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--theme-b);
+      box-shadow: 0 0 18px var(--theme-b);
+    }
+
+    .neon-tape {
+      position: absolute;
+      z-index: -1;
+      width: 220px;
+      height: 58px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--theme-a) 30%, transparent), color-mix(in srgb, var(--theme-b) 22%, transparent));
+      filter: blur(0.3px);
+      opacity: 0.68;
+      transform: rotate(var(--rotate));
+    }
+
+    .micro-grid {
+      position: absolute;
+      inset: auto;
+      z-index: 0;
+      width: 190px;
+      height: 120px;
+      opacity: 0.42;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.34) 1px, transparent 1.8px);
+      background-size: 15px 15px;
+      pointer-events: none;
+    }
+
+    /* =====================================================
+       ШАПКА И ГЕРОЙ-ЭКРАН
+    ===================================================== */
+    .site-header {
+      position: relative;
+      min-height: 800px;
+      padding: 22px 0 98px;
+      overflow: clip;
+    }
+
+    .top-nav {
+      position: sticky;
+      top: 14px;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: min(100% - 40px, var(--max-width));
+      margin: 0 auto;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      background: rgba(12, 55, 130, 0.58);
+      box-shadow: 0 22px 70px rgba(0,0,0,0.28);
+      backdrop-filter: blur(26px);
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 10px 16px;
+      border-radius: 999px;
+      color: var(--soft-text);
+      font-weight: 800;
+      font-size: 15px;
+      transition: color var(--transition), background 0.65s ease, transform var(--transition);
+      white-space: nowrap;
+    }
+
+    .nav-link:hover,
+    .nav-link.is-active {
+      color: var(--white);
+      background: linear-gradient(135deg, var(--theme-a), var(--theme-b));
+      transform: translateY(-2px);
+      box-shadow: 0 0 24px color-mix(in srgb, var(--theme-a) 30%, transparent);
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(380px, 0.92fr);
+      align-items: center;
+      gap: 46px;
+      padding-top: 108px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-subtitle {
+      margin-top: 24px;
+      color: var(--text);
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 850;
+      letter-spacing: -0.035em;
+      text-shadow: 0 0 24px color-mix(in srgb, var(--theme-b) 18%, transparent);
+    }
+
+    .hero-text {
+      max-width: 700px;
+      margin-top: 22px;
+      color: var(--soft-text);
+      font-size: 19px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .hero-tag-1 {
+      left: -18px;
+      bottom: 64px;
+      --rotate: -4deg;
+    }
+
+    .hero-tag-2 {
+      right: 2%;
+      top: 168px;
+      --rotate: 3deg;
+    }
+
+    .hero-tape-1 {
+      left: -42px;
+      top: 28%;
+      --rotate: -12deg;
+    }
+
+    .hero-tape-2 {
+      right: 18px;
+      bottom: 10%;
+      --rotate: 10deg;
+    }
+
+    .hero-grid-dots {
+      right: 34%;
+      bottom: 22%;
+    }
+
+    .ai-stage {
+      position: relative;
+      min-height: 540px;
+      padding: 30px;
+      border-radius: 38px;
+      background:
+        radial-gradient(circle at 25% 20%, color-mix(in srgb, var(--theme-b) 28%, transparent), transparent 35%),
+        radial-gradient(circle at 76% 72%, color-mix(in srgb, var(--theme-a) 28%, transparent), transparent 36%),
+        rgba(255,255,255,0.09);
+      box-shadow: var(--shadow), 0 0 62px color-mix(in srgb, var(--theme-b) 18%, transparent), var(--shadow-neon);
+      overflow: hidden;
+      transition: background 0.65s ease, box-shadow 0.65s ease;
+    }
+
+    .ai-stage::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 30px;
+      background:
+        linear-gradient(90deg, transparent 48%, color-mix(in srgb, var(--theme-b) 16%, transparent) 50%, transparent 52%),
+        linear-gradient(0deg, transparent 48%, color-mix(in srgb, var(--theme-a) 16%, transparent) 50%, transparent 52%);
+      background-size: 72px 72px;
+      opacity: 0.5;
+    }
+
+    .ai-stage::after {
+      content: "";
+      position: absolute;
+      left: -35%;
+      top: 20%;
+      width: 170%;
+      height: 120px;
+      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--theme-b) 20%, transparent), transparent);
+      transform: rotate(-18deg);
+      animation: lightSweep 5.8s ease-in-out infinite;
+    }
+
+    @keyframes lightSweep {
+      0%, 100% {
+        transform: translateX(-20%) rotate(-18deg);
+        opacity: 0.2;
+      }
+      50% {
+        transform: translateX(20%) rotate(-18deg);
+        opacity: 0.78;
+      }
+    }
+
+    .ai-core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 4;
+      display: grid;
+      place-items: center;
+      width: 190px;
+      height: 190px;
+      border-radius: 52px;
+      color: #FFFFFF;
+      background:
+        conic-gradient(from 140deg, var(--theme-a), var(--theme-b), #D1FAE5, #FDE68A, var(--theme-a));
+      box-shadow:
+        0 0 70px color-mix(in srgb, var(--theme-a) 50%, transparent),
+        inset 0 0 34px rgba(255,255,255,0.32);
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing: -0.04em;
+      animation: corePulse 3.6s ease-in-out infinite;
+    }
+
+    .ai-core span {
+      font-family: var(--font-script);
+      font-size: 32px;
+      line-height: 0.95;
+    }
+
+    @keyframes corePulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: saturate(1);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        filter: saturate(1.28);
+      }
+    }
+
+    .orbit {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 3;
+      border: 1px dashed color-mix(in srgb, var(--theme-b) 36%, transparent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin 18s linear infinite;
+    }
+
+    .orbit.one {
+      width: 310px;
+      height: 310px;
+    }
+
+    .orbit.two {
+      width: 430px;
+      height: 430px;
+      animation-duration: 28s;
+      animation-direction: reverse;
+      border-color: color-mix(in srgb, var(--theme-a) 36%, transparent);
+    }
+
+    @keyframes spin {
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    .tool-panel {
+      position: absolute;
+      z-index: 5;
+      width: 178px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.17);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.10);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.24);
+      backdrop-filter: blur(20px);
+      transition: transform var(--transition), background var(--transition), border-color var(--transition);
+    }
+
+    .tool-panel:hover {
+      transform: translateY(-7px) rotate(0deg) scale(1.03);
+      border-color: color-mix(in srgb, var(--theme-b) 52%, transparent);
+      background: rgba(255,255,255,0.15);
+    }
+
+    .tool-panel strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #FFFFFF;
+      font-size: 20px;
+      line-height: 1.1;
+    }
+
+    .tool-panel span {
+      color: var(--soft-text);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .panel-1 {
+      left: 26px;
+      top: 42px;
+      transform: rotate(-4deg);
+    }
+
+    .panel-2 {
+      right: 24px;
+      top: 92px;
+      transform: rotate(3deg);
+    }
+
+    .panel-3 {
+      left: 42px;
+      bottom: 72px;
+      transform: rotate(4deg);
+    }
+
+    .panel-4 {
+      right: 44px;
+      bottom: 46px;
+      transform: rotate(-3deg);
+    }
+
+    .ai-node {
+      position: absolute;
+      z-index: 2;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--theme-b);
+      box-shadow: 0 0 22px var(--theme-b);
+      animation: nodePulse 2.6s ease-in-out infinite;
+    }
+
+    .node-1 { left: 22%; top: 24%; }
+    .node-2 { left: 76%; top: 32%; animation-delay: -0.8s; }
+    .node-3 { left: 34%; top: 76%; animation-delay: -1.2s; }
+    .node-4 { left: 70%; top: 72%; animation-delay: -1.7s; }
+
+    @keyframes nodePulse {
+      0%, 100% { transform: scale(1); opacity: 0.65; }
+      50% { transform: scale(1.8); opacity: 1; }
+    }
+
+    /* =====================================================
+       ОБО МНЕ
+    ===================================================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .avatar-card,
+    .about-card {
+      padding: 30px;
+    }
+
+    .avatar-card {
+      display: grid;
+      place-items: center;
+      min-height: 460px;
+      text-align: center;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 286px;
+      height: 286px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: conic-gradient(from 180deg, var(--theme-a), var(--theme-b), #D1FAE5, #FDE68A, var(--theme-a));
+      box-shadow: 0 0 70px color-mix(in srgb, var(--theme-a) 38%, transparent);
+      animation: avatarGlow 4.6s ease-in-out infinite;
+    }
+
+    @keyframes avatarGlow {
+      0%, 100% { filter: saturate(1) brightness(1); }
+      50% { filter: saturate(1.35) brightness(1.08); }
+    }
+
+    .avatar-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -16px;
+      border: 2px dashed color-mix(in srgb, var(--theme-b) 38%, transparent);
+      border-radius: 50%;
+      animation: spin 19s linear infinite;
+    }
+
+    .avatar-wrap img {
+      position: relative;
+      z-index: 1;
+      width: 240px;
+      height: 240px;
+      object-fit: cover;
+      border: 7px solid rgba(255,255,255,0.86);
+      border-radius: 50%;
+      background: #0B2A6F;
+      box-shadow: var(--shadow);
+    }
+
+    .avatar-caption {
+      margin-top: 28px;
+      color: var(--soft-text);
+      font-weight: 850;
+    }
+
+    .about-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+      font-size: 19px;
+    }
+
+    .about-card p,
+    .skill-pills,
+    .mini-stats {
+      position: relative;
+      z-index: 2;
+    }
+
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .skill-pills span {
+      padding: 11px 15px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      color: #FFFFFF;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+      font-weight: 850;
+      font-size: 14px;
+      backdrop-filter: blur(16px);
+      transition: transform var(--transition), background var(--transition);
+    }
+
+    .skill-pills span:hover {
+      transform: translateY(-3px);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 28%, transparent), color-mix(in srgb, var(--theme-b) 20%, transparent));
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .mini-stat {
+      padding: 18px 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.07);
+      text-align: center;
+      backdrop-filter: blur(14px);
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-family: var(--font-script);
+      color: transparent;
+      background: linear-gradient(100deg, #FFFFFF, var(--theme-b), var(--theme-a));
+      -webkit-background-clip: text;
+      background-clip: text;
+      font-size: 31px;
+      line-height: 1;
+    }
+
+    .mini-stat span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    /* =====================================================
+       КАРУСЕЛИ: СМЕНА ЦВЕТОВ ПРИ ПЕРЕЛИСТЫВАНИИ
+    ===================================================== */
+    .carousel-zone {
+      position: relative;
+    }
+
+    .carousel-frame {
+      position: relative;
+      padding: 20px;
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--theme-b) 17%, transparent), transparent 34%),
+        radial-gradient(circle at 88% 90%, color-mix(in srgb, var(--theme-a) 18%, transparent), transparent 36%),
+        rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow);
+      transition: background 0.65s ease, box-shadow 0.65s ease;
+    }
+
+    .carousel {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 10px 2px 28px;
+      scrollbar-width: thin;
+      scrollbar-color: color-mix(in srgb, var(--theme-b) 42%, transparent) transparent;
+    }
+
+    .carousel::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    .carousel::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--theme-b) 42%, transparent);
+    }
+
+    .work-card,
+    .video-card {
+      position: relative;
+      flex: 0 0 360px;
+      min-height: 292px;
+      scroll-snap-align: start;
+      cursor: pointer;
+    }
+
+    .work-card img,
+    .video-card img {
+      width: 100%;
+      height: 276px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 30%, #0B2A6F), color-mix(in srgb, var(--theme-b) 30%, #0E3A78));
+      transition: transform var(--transition), filter var(--transition);
+    }
+
+    .work-card:hover img,
+    .video-card:hover img {
+      transform: scale(1.055);
+      filter: saturate(1.18) contrast(1.06);
+    }
+
+    .work-card figcaption,
+    .video-caption {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      z-index: 3;
+      padding: 13px 15px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 18px;
+      color: #FFFFFF;
+      background: rgba(8, 35, 92, 0.62);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.22);
+      backdrop-filter: blur(16px);
+      font-weight: 850;
+    }
+
+    .work-card figcaption:empty {
+      display: none;
+    }
+
+    #images .section-subtitle:empty {
+      display: none;
+    }
+
+    .work-card::after,
+    .video-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, transparent 35%, rgba(0,0,0,0.48)),
+        linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 22%, transparent), transparent 45%);
+      pointer-events: none;
+    }
+
+    .play-badge {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 4;
+      display: grid;
+      place-items: center;
+      width: 82px;
+      height: 82px;
+      border: 2px solid rgba(255,255,255,0.48);
+      border-radius: 50%;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--theme-a), var(--theme-b));
+      box-shadow: 0 0 46px color-mix(in srgb, var(--theme-a) 38%, transparent);
+      font-size: 29px;
+      transform: translate(-50%, -50%);
+      transition: transform var(--transition), background 0.65s ease;
+    }
+
+    .video-card:hover .play-badge {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      z-index: 8;
+      width: 56px;
+      height: 56px;
+      border: 1px solid rgba(255,255,255,0.20);
+      border-radius: 50%;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--theme-a), var(--theme-b));
+      box-shadow: 0 0 40px color-mix(in srgb, var(--theme-a) 32%, transparent);
+      cursor: pointer;
+      transform: translateY(-50%);
+      transition: transform var(--transition), box-shadow var(--transition), background 0.65s ease;
+    }
+
+    .carousel-button:hover {
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 0 56px color-mix(in srgb, var(--theme-b) 40%, transparent);
+    }
+
+    .carousel-button.prev {
+      left: -18px;
+    }
+
+    .carousel-button.next {
+      right: -18px;
+    }
+
+    .theme-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .theme-dot {
+      width: 42px;
+      height: 6px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.20);
+      cursor: pointer;
+      transition: width var(--transition), background 0.65s ease, box-shadow 0.65s ease;
+    }
+
+    .theme-dot.is-active {
+      width: 72px;
+      background: linear-gradient(90deg, var(--theme-a), var(--theme-b));
+      box-shadow: 0 0 22px color-mix(in srgb, var(--theme-b) 36%, transparent);
+    }
+
+    .canva-note {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 24px;
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 13%, transparent), color-mix(in srgb, var(--theme-b) 10%, transparent)),
+        rgba(255,255,255,0.055);
+      color: var(--soft-text);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.16);
+      font-weight: 750;
+      backdrop-filter: blur(16px);
+      transition: background 0.65s ease;
+    }
+
+    /* =====================================================
+       ДВЕ ПРЕЗЕНТАЦИИ И ПРОЕКТЫ
+    ===================================================== */
+    .presentation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .viewer-card {
+      padding: 18px;
+    }
+
+    .viewer-header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+      padding: 6px 4px 0;
+    }
+
+    .viewer-title {
+      font-family: var(--font-script);
+      color: transparent;
+      background: linear-gradient(100deg, #FFFFFF, var(--theme-b), var(--theme-a));
+      -webkit-background-clip: text;
+      background-clip: text;
+      font-size: 30px;
+      line-height: 1.05;
+      font-weight: 700;
+    }
+
+    .viewer-tag {
+      flex: 0 0 auto;
+      padding: 8px 11px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 35%, transparent), color-mix(in srgb, var(--theme-b) 22%, transparent));
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+    }
+
+    .pdf-viewer {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 560px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--theme-a) 24%, #0B2A6F), color-mix(in srgb, var(--theme-b) 20%, #0B2A6F));
+    }
+
+    .project-frame {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 700px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: var(--radius);
+      background: #08235C;
+    }
+
+    .viewer-actions {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    /* =====================================================
+       МОДАЛЬНЫЕ ОКНА
+    ===================================================== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at center, color-mix(in srgb, var(--theme-a) 30%, transparent), transparent 45%),
+        rgba(2, 6, 23, 0.82);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+      backdrop-filter: blur(12px);
+    }
+
+    .modal.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      position: relative;
+      width: min(100%, 980px);
+      max-height: 88vh;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 32px;
+      background: rgba(8, 35, 92, 0.88);
+      box-shadow: 0 34px 100px rgba(0,0,0,0.42), 0 0 60px color-mix(in srgb, var(--theme-a) 30%, transparent);
+      transform: scale(0.92) translateY(16px);
+      transition: transform var(--transition), box-shadow 0.65s ease;
+    }
+
+    .modal.is-open .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-content img,
+    .modal-content video {
+      width: 100%;
+      max-height: 78vh;
+      object-fit: contain;
+      border-radius: 24px;
+      background: #061B3D;
+    }
+
+    .modal-close {
+      position: absolute;
+      right: -14px;
+      top: -14px;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 50%;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--theme-a), var(--theme-b));
+      box-shadow: 0 0 36px color-mix(in srgb, var(--theme-a) 38%, transparent);
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), background 0.65s ease;
+    }
+
+    .modal-close:hover {
+      transform: scale(1.1) rotate(8deg);
+      box-shadow: 0 0 52px color-mix(in srgb, var(--theme-b) 45%, transparent);
+    }
+
+    /* =====================================================
+       ПОДВАЛ
+    ===================================================== */
+    .site-footer {
+      position: relative;
+      padding: 44px 0 50px;
+      color: var(--soft-text);
+      text-align: center;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--theme-a) 14%, transparent), color-mix(in srgb, var(--theme-b) 12%, transparent)),
+        rgba(255,255,255,0.035);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+      transition: background 0.65s ease;
+    }
+
+    .site-footer strong {
+      font-family: var(--font-script);
+      color: transparent;
+      background: linear-gradient(100deg, #FFFFFF, var(--theme-b), var(--theme-a));
+      -webkit-background-clip: text;
+      background-clip: text;
+      font-size: 25px;
+    }
+
+    /* =====================================================
+       АДАПТИВНОСТЬ: TABLET
+    ===================================================== */
+    @media (max-width: 1023px) {
+      .site-header {
+        min-height: auto;
+        padding-bottom: 76px;
+      }
+
+      .top-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        border-radius: 24px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 76px;
+      }
+
+      .ai-stage {
+        min-height: 500px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .presentation-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .carousel-button.prev {
+        left: 6px;
+      }
+
+      .carousel-button.next {
+        right: 6px;
+      }
+
+      .work-card,
+      .video-card {
+        flex-basis: 330px;
+      }
+    }
+
+    /* =====================================================
+       АДАПТИВНОСТЬ: MOBILE
+    ===================================================== */
+    @media (max-width: 767px) {
+      html {
+        scroll-padding-top: 88px;
+      }
+
+      .page-shell {
+        width: min(100% - 24px, var(--max-width));
+      }
+
+      .section {
+        padding: 80px 0;
+      }
+
+      .top-nav {
+        top: 8px;
+        width: min(100% - 18px, var(--max-width));
+        padding: 8px;
+        gap: 6px;
+      }
+
+      .nav-link {
+        padding: 9px 12px;
+        font-size: 14px;
+      }
+
+      .hero {
+        gap: 34px;
+        padding-top: 58px;
+      }
+
+      .script-name {
+        font-size: clamp(48px, 16vw, 64px);
+        padding-right: 6px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .button,
+      .ghost-button {
+        width: 100%;
+      }
+
+      .design-tag,
+      .neon-tape,
+      .micro-grid {
+        display: none;
+      }
+
+      .ai-stage {
+        min-height: 438px;
+        padding: 18px;
+        border-radius: 30px;
+      }
+
+      .ai-core {
+        width: 150px;
+        height: 150px;
+        border-radius: 40px;
+        font-size: 17px;
+      }
+
+      .ai-core span {
+        font-size: 27px;
+      }
+
+      .orbit.one {
+        width: 240px;
+        height: 240px;
+      }
+
+      .orbit.two {
+        width: 330px;
+        height: 330px;
+      }
+
+      .tool-panel {
+        width: 144px;
+        padding: 13px;
+      }
+
+      .tool-panel strong {
+        font-size: 17px;
+      }
+
+      .tool-panel span {
+        font-size: 12px;
+      }
+
+      .panel-1 { left: 14px; top: 32px; }
+      .panel-2 { right: 12px; top: 80px; }
+      .panel-3 { left: 14px; bottom: 58px; }
+      .panel-4 { right: 14px; bottom: 26px; }
+
+      .avatar-card,
+      .about-card {
+        padding: 22px;
+      }
+
+      .avatar-wrap {
+        width: 238px;
+        height: 238px;
+      }
+
+      .avatar-wrap img {
+        width: 208px;
+        height: 208px;
+      }
+
+      .mini-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .carousel-frame {
+        padding: 14px;
+        border-radius: 28px;
+      }
+
+      .work-card,
+      .video-card {
+        flex-basis: 84vw;
+      }
+
+      .work-card img,
+      .video-card img {
+        height: 236px;
+      }
+
+      .carousel-button {
+        width: 48px;
+        height: 48px;
+      }
+
+      .pdf-viewer {
+        height: 440px;
+      }
+
+      .project-frame {
+        height: 520px;
+      }
+
+      .cursor-glow {
+        display: none;
+      }
+
+      .edge-object {
+        opacity: 0.45;
+      }
+
+      .center-decor {
+        opacity: 0.55;
+      }
+
+      .float-orb:nth-child(n + 7),
+      .data-shard:nth-child(n + 10),
+      .energy-ring:nth-child(n + 13) {
+        display: none;
+      }
+
+      .modal-content {
+        padding: 10px;
+      }
+
+      .modal-close {
+        right: 4px;
+        top: 4px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  
+
+    /* =====================================================
+       STYLE-ONLY PATCH: PREMIUM BUSINESS AI FUTURE
+       Текст и структура страницы не менялись — только оформление.
+    ===================================================== */
+    :root {
+      --theme-a: #2563EB;
+      --theme-b: #38D5FF;
+      --theme-c: #F7D27A;
+      --theme-glow: rgba(56, 213, 255, 0.34);
+      --dark-1: #03142F;
+      --dark-2: #06245A;
+      --dark-3: #0A4F8F;
+      --glass: rgba(255, 255, 255, 0.085);
+      --glass-strong: rgba(255, 255, 255, 0.13);
+      --text: #F8FBFF;
+      --soft-text: #C9D9F2;
+      --muted: #8FA9CE;
+      --line: rgba(255, 255, 255, 0.17);
+      --radius: 34px;
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.38);
+      --shadow-neon: 0 0 42px rgba(56, 213, 255, 0.34), 0 0 36px rgba(247, 210, 122, 0.16);
+      --font-main: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --font-script: "Segoe UI Variable Display", "SF Pro Display", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: #03142F;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -7;
+      pointer-events: none;
+      opacity: 0.42;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+        radial-gradient(circle at 20% 20%, rgba(56,213,255,0.11), transparent 26%),
+        radial-gradient(circle at 84% 16%, rgba(247,210,122,0.10), transparent 26%);
+      background-size: 72px 72px, 72px 72px, auto, auto;
+      mask-image: radial-gradient(circle at 50% 18%, black 0%, transparent 78%);
+    }
+
+    .future-bg {
+      background:
+        radial-gradient(circle at 14% 10%, rgba(56, 213, 255, 0.34), transparent 30%),
+        radial-gradient(circle at 82% 7%, rgba(139, 92, 246, 0.25), transparent 28%),
+        radial-gradient(circle at 63% 80%, rgba(247, 210, 122, 0.15), transparent 34%),
+        linear-gradient(145deg, #03142F 0%, #06245A 32%, #0A4F8F 66%, #061B3D 100%);
+    }
+
+    .future-bg::before {
+      opacity: 0.22;
+      background-image:
+        linear-gradient(rgba(125, 211, 252, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(125, 211, 252, 0.08) 1px, transparent 1px);
+      background-size: 76px 76px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+    }
+
+    .future-bg::after {
+      opacity: 0.34;
+      background:
+        conic-gradient(from 120deg at 50% 50%, transparent, rgba(56, 213, 255, 0.16), transparent, rgba(247, 210, 122, 0.10), transparent, rgba(139, 92, 246, 0.14), transparent);
+      filter: blur(18px);
+    }
+
+    .scan-lines {
+      opacity: 0.10;
+      background-size: 100% 12px;
+    }
+
+    .cursor-glow {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(56, 213, 255, 0.18), rgba(247, 210, 122, 0.06) 30%, transparent 68%);
+      mix-blend-mode: screen;
+    }
+
+    .edge-object {
+      opacity: 0.42;
+      filter: saturate(0.92);
+    }
+
+    .edge-object::before {
+      border-color: rgba(125, 211, 252, 0.24);
+      background:
+        linear-gradient(135deg, rgba(56, 213, 255, 0.14), rgba(139, 92, 246, 0.12)),
+        rgba(255, 255, 255, 0.035);
+      box-shadow: 0 0 24px rgba(56, 213, 255, 0.18);
+    }
+
+    .edge-object::after {
+      color: rgba(233, 244, 255, 0.66);
+      text-shadow: 0 0 14px rgba(56, 213, 255, 0.5);
+    }
+
+    .site-header {
+      min-height: 820px;
+      padding-top: 24px;
+    }
+
+    .top-nav {
+      top: 16px;
+      justify-content: center;
+      border: 1px solid rgba(125, 211, 252, 0.20);
+      background: rgba(3, 20, 47, 0.56);
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter: blur(28px) saturate(1.18);
+    }
+
+    .nav-link {
+      color: rgba(226, 238, 255, 0.78);
+      font-size: 14px;
+      letter-spacing: 0.015em;
+    }
+
+    .nav-link:hover,
+    .nav-link.is-active {
+      background: linear-gradient(135deg, rgba(56, 213, 255, 0.95), rgba(37, 99, 235, 0.88));
+      color: #FFFFFF;
+      box-shadow: 0 0 28px rgba(56, 213, 255, 0.34);
+    }
+
+    .hero {
+      grid-template-columns: minmax(0, 0.98fr) minmax(410px, 0.92fr);
+      gap: 56px;
+      padding-top: 116px;
+    }
+
+    .soft-label {
+      border-color: rgba(247, 210, 122, 0.24);
+      color: rgba(255,255,255,0.96);
+      background:
+        linear-gradient(135deg, rgba(247, 210, 122, 0.16), rgba(56, 213, 255, 0.13)),
+        rgba(255,255,255,0.065);
+      box-shadow: 0 0 36px rgba(56, 213, 255, 0.16), inset 0 1px 0 rgba(255,255,255,0.12);
+      letter-spacing: 0.11em;
+    }
+
+    .script-name,
+    .section-title,
+    .viewer-title,
+    .site-footer strong,
+    .mini-stat strong {
+      font-family: var(--font-script);
+      letter-spacing: -0.055em;
+      background: linear-gradient(105deg, #FFFFFF 0%, #DDF5FF 22%, #38D5FF 43%, #F7D27A 68%, #FFFFFF 100%);
+      background-size: 230% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 18px rgba(56, 213, 255, 0.24));
+    }
+
+    .script-name {
+      font-size: clamp(56px, 7vw, 92px);
+      line-height: 0.94;
+      max-width: 760px;
+    }
+
+    .script-name::after {
+      left: 0;
+      right: 12%;
+      bottom: 2px;
+      height: 10px;
+      background: linear-gradient(90deg, rgba(56,213,255,0), rgba(56,213,255,0.28), rgba(247,210,122,0.20), rgba(56,213,255,0));
+    }
+
+    .hero-subtitle {
+      max-width: 760px;
+      color: #FFFFFF;
+      font-size: clamp(25px, 2.55vw, 36px);
+      line-height: 1.08;
+      text-shadow: 0 0 28px rgba(56, 213, 255, 0.18);
+    }
+
+    .hero-text,
+    .section-subtitle,
+    .about-card,
+    .canva-note {
+      color: var(--soft-text);
+    }
+
+    .hero-text {
+      max-width: 720px;
+      font-size: 19.5px;
+    }
+
+    .button {
+      background: linear-gradient(135deg, #38D5FF, #2563EB 58%, #8B5CF6);
+      color: #FFFFFF;
+      box-shadow: 0 20px 48px rgba(37, 99, 235, 0.34), 0 0 26px rgba(56, 213, 255, 0.22);
+    }
+
+    .ghost-button {
+      border-color: rgba(125, 211, 252, 0.26);
+      background: rgba(255,255,255,0.07);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+    }
+
+    .button:hover,
+    .ghost-button:hover {
+      box-shadow: 0 0 46px rgba(56, 213, 255, 0.36), 0 24px 60px rgba(0,0,0,0.28);
+    }
+
+    .card,
+    .carousel-frame,
+    .viewer-card,
+    .about-card,
+    .avatar-card {
+      border: 1px solid rgba(125, 211, 252, 0.18);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.105), rgba(255,255,255,0.045)),
+        radial-gradient(circle at 10% 0%, rgba(56, 213, 255, 0.14), transparent 38%),
+        radial-gradient(circle at 92% 20%, rgba(247, 210, 122, 0.07), transparent 35%),
+        rgba(6, 28, 70, 0.62);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.10);
+      backdrop-filter: blur(24px) saturate(1.18);
+    }
+
+    .card::after {
+      border-color: rgba(125, 211, 252, 0.14);
+    }
+
+    .card:hover {
+      transform: translateY(-7px);
+      border-color: rgba(56, 213, 255, 0.42);
+      box-shadow: var(--shadow), var(--shadow-neon);
+    }
+
+    .design-tag {
+      border-color: rgba(247, 210, 122, 0.26);
+      background: rgba(3, 20, 47, 0.50);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.24), 0 0 26px rgba(56, 213, 255, 0.14);
+      color: rgba(255,255,255,0.92);
+    }
+
+    .design-tag::before {
+      background: #F7D27A;
+      box-shadow: 0 0 18px rgba(247, 210, 122, 0.78);
+    }
+
+    .neon-tape {
+      background: linear-gradient(90deg, rgba(56, 213, 255, 0.18), rgba(247, 210, 122, 0.12), rgba(139, 92, 246, 0.12));
+      opacity: 0.46;
+    }
+
+    .ai-stage {
+      min-height: 560px;
+      border-radius: 42px;
+      background:
+        radial-gradient(circle at 24% 20%, rgba(56, 213, 255, 0.19), transparent 33%),
+        radial-gradient(circle at 76% 76%, rgba(247, 210, 122, 0.12), transparent 34%),
+        linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.045)),
+        rgba(4, 22, 53, 0.68);
+    }
+
+    .ai-stage::before {
+      border-color: rgba(125, 211, 252, 0.16);
+      background:
+        linear-gradient(90deg, transparent 48%, rgba(56,213,255,0.16) 50%, transparent 52%),
+        linear-gradient(0deg, transparent 48%, rgba(247,210,122,0.10) 50%, transparent 52%);
+      background-size: 84px 84px;
+    }
+
+    .ai-stage::after {
+      background: linear-gradient(90deg, transparent, rgba(56, 213, 255, 0.22), rgba(247, 210, 122, 0.12), transparent);
+      opacity: 0.74;
+    }
+
+    .ai-core {
+      width: 198px;
+      height: 198px;
+      border-radius: 58px;
+      background: conic-gradient(from 145deg, #2563EB, #38D5FF, #F7D27A, #8B5CF6, #2563EB);
+      box-shadow: 0 0 76px rgba(56, 213, 255, 0.38), 0 0 52px rgba(247, 210, 122, 0.16), inset 0 0 34px rgba(255,255,255,0.32);
+      letter-spacing: -0.05em;
+    }
+
+    .ai-core span {
+      font-family: var(--font-script);
+      letter-spacing: -0.06em;
+    }
+
+    .orbit.one,
+    .orbit.two {
+      border-color: rgba(56, 213, 255, 0.30);
+    }
+
+    .orbit.two {
+      border-color: rgba(247, 210, 122, 0.24);
+    }
+
+    .tool-panel {
+      border-color: rgba(125, 211, 252, 0.18);
+      background: rgba(255,255,255,0.085);
+      box-shadow: 0 20px 56px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.10);
+    }
+
+    .tool-panel strong {
+      color: #FFFFFF;
+      letter-spacing: -0.045em;
+    }
+
+    .tool-panel span {
+      color: rgba(201, 217, 242, 0.90);
+    }
+
+    .tool-panel:hover {
+      border-color: rgba(56, 213, 255, 0.48);
+      background: rgba(255,255,255,0.125);
+    }
+
+    .ai-node {
+      background: #F7D27A;
+      box-shadow: 0 0 22px rgba(247, 210, 122, 0.86), 0 0 38px rgba(56, 213, 255, 0.28);
+    }
+
+    .section {
+      padding: 114px 0;
+    }
+
+    .section::before {
+      background: radial-gradient(ellipse, rgba(56,213,255,0.14), rgba(247,210,122,0.06) 36%, transparent 70%);
+      filter: blur(20px);
+    }
+
+    .section-transition {
+      height: 72px;
+      background: linear-gradient(90deg, transparent, rgba(56,213,255,0.20), rgba(247,210,122,0.11), transparent);
+      opacity: 0.58;
+    }
+
+    .section-title {
+      font-size: clamp(44px, 5.6vw, 72px);
+      line-height: 0.98;
+    }
+
+    .avatar-wrap {
+      background: conic-gradient(from 180deg, #2563EB, #38D5FF, #F7D27A, #8B5CF6, #2563EB);
+      box-shadow: 0 0 70px rgba(56, 213, 255, 0.26), 0 0 42px rgba(247, 210, 122, 0.12);
+    }
+
+    .avatar-wrap::before {
+      border-color: rgba(247, 210, 122, 0.25);
+    }
+
+    .avatar-wrap img {
+      border-color: rgba(255,255,255,0.86);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.34);
+    }
+
+    .skill-pills span,
+    .mini-stat,
+    .canva-note {
+      border-color: rgba(125, 211, 252, 0.16);
+      background: rgba(255,255,255,0.065);
+    }
+
+    .skill-pills span:hover {
+      background: linear-gradient(135deg, rgba(56,213,255,0.16), rgba(37,99,235,0.12));
+    }
+
+    .carousel-frame {
+      border-radius: 38px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(56, 213, 255, 0.16), transparent 34%),
+        radial-gradient(circle at 88% 90%, rgba(247, 210, 122, 0.10), transparent 36%),
+        rgba(255,255,255,0.052);
+    }
+
+    .work-card,
+    .video-card {
+      flex-basis: 370px;
+      min-height: 304px;
+    }
+
+    .work-card img,
+    .video-card img {
+      height: 286px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(37,99,235,0.9), rgba(56,213,255,0.6));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10);
+    }
+
+    .work-card figcaption,
+    .video-caption {
+      border-color: rgba(125, 211, 252, 0.18);
+      background: rgba(3, 20, 47, 0.68);
+      color: rgba(255,255,255,0.94);
+    }
+
+    .play-badge,
+    .carousel-button,
+    .modal-close {
+      background: linear-gradient(135deg, #38D5FF, #2563EB 64%, #8B5CF6);
+      box-shadow: 0 0 42px rgba(56, 213, 255, 0.35);
+    }
+
+    .theme-dot.is-active {
+      background: linear-gradient(90deg, #38D5FF, #2563EB, #F7D27A);
+      box-shadow: 0 0 22px rgba(56, 213, 255, 0.34);
+    }
+
+    .viewer-title {
+      font-size: 29px;
+    }
+
+    .viewer-tag {
+      border-color: rgba(247, 210, 122, 0.26);
+      background: linear-gradient(135deg, rgba(247, 210, 122, 0.20), rgba(56, 213, 255, 0.13));
+      color: #FFFFFF;
+    }
+
+    .pdf-viewer,
+    .project-frame {
+      border-color: rgba(125, 211, 252, 0.16);
+      background: linear-gradient(135deg, #061B3D, #0A4F8F);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    .modal {
+      background:
+        radial-gradient(circle at center, rgba(56, 213, 255, 0.22), transparent 44%),
+        rgba(1, 8, 22, 0.86);
+    }
+
+    .modal-content {
+      border-color: rgba(125, 211, 252, 0.22);
+      background: rgba(3, 20, 47, 0.92);
+      box-shadow: 0 34px 100px rgba(0,0,0,0.45), 0 0 60px rgba(56,213,255,0.22);
+    }
+
+    .site-footer {
+      background:
+        linear-gradient(90deg, rgba(56, 213, 255, 0.10), rgba(247, 210, 122, 0.06), rgba(139,92,246,0.08)),
+        rgba(255,255,255,0.035);
+      border-top-color: rgba(125, 211, 252, 0.14);
+    }
+
+    @media (max-width: 1023px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 44px;
+      }
+
+      .top-nav {
+        justify-content: flex-start;
+      }
+
+      .ai-stage {
+        min-height: 500px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .site-header {
+        padding-top: 14px;
+      }
+
+      .section {
+        padding: 78px 0;
+      }
+
+      .script-name {
+        font-size: clamp(45px, 14vw, 62px);
+      }
+
+      .hero-subtitle {
+        font-size: clamp(23px, 7vw, 30px);
+      }
+
+      .hero-text,
+      .section-subtitle,
+      .about-card {
+        font-size: 17px;
+      }
+
+      .ai-stage {
+        min-height: 430px;
+      }
+
+      .work-card,
+      .video-card {
+        flex-basis: 84vw;
+      }
+
+      .work-card img,
+      .video-card img {
+        height: 238px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- =====================================================
+       ФОН И ДЕКОР: ОБЪЕКТЫ ТОЛЬКО ПО КРАЯМ
+  ===================================================== -->
+  <div class="future-bg" aria-hidden="true"></div>
+  <div class="scan-lines" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+  <div class="edge-decor" id="edge-decor" aria-hidden="true"></div>
+  <div class="center-decor" id="center-decor" aria-hidden="true"></div>
+
+  <!-- =====================================================
+       ШАПКА
+  ===================================================== -->
+  <header class="site-header" id="top">
+    <nav class="top-nav" aria-label="Главное меню">
+      <a class="nav-link" href="#about">Обо мне</a>
+      <a class="nav-link" href="#images">Картинки</a>
+      <a class="nav-link" href="#videos">Видео</a>
+      <a class="nav-link" href="#presentation">Презентация</a>
+      <a class="nav-link" href="#projects">Проекты</a>
+    </nav>
+
+    <div class="page-shell hero">
+      <div class="hero-content">
+        <span class="soft-label">AI CONTENT STUDIO</span>
+
+        <!-- STUDENT_NAME: замените имя при необходимости -->
+        <h1 class="script-name">Маргарита Лебедева</h1>
+
+        <p class="hero-subtitle">Специалист по ИИ в образовании</p>
+        <p class="hero-text">
+          Создаю визуальный контент, видео, презентации и сайты с помощью искусственного интеллекта.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button" href="#images">Смотреть работы</a>
+          <a class="ghost-button" href="#presentation">Открыть презентации</a>
+        </div>
+
+        <div class="design-tag hero-tag-1" style="--rotate: -4deg;">нейросети + дизайн</div>
+        <div class="design-tag hero-tag-2" style="--rotate: 3deg;">premium AI visual</div>
+        <div class="neon-tape hero-tape-1" style="--rotate: -12deg;"></div>
+        <div class="neon-tape hero-tape-2" style="--rotate: 10deg;"></div>
+        <div class="micro-grid hero-grid-dots"></div>
+      </div>
+
+      <div class="ai-stage card" aria-label="Футуристичная AI-витрина">
+        <div class="orbit one" aria-hidden="true"></div>
+        <div class="orbit two" aria-hidden="true"></div>
+
+        <div class="ai-node node-1" aria-hidden="true"></div>
+        <div class="ai-node node-2" aria-hidden="true"></div>
+        <div class="ai-node node-3" aria-hidden="true"></div>
+        <div class="ai-node node-4" aria-hidden="true"></div>
+
+        <div class="ai-core"><span>AI</span><br>future<br>studio</div>
+
+        <div class="tool-panel panel-1">
+          <strong>Картинки</strong>
+          <span>визуалы, постеры, инфографика</span>
+        </div>
+
+        <div class="tool-panel panel-2">
+          <strong>Видео</strong>
+          <span>ролики, монтаж, эффекты</span>
+        </div>
+
+        <div class="tool-panel panel-3">
+          <strong>Слайды</strong>
+          <span>образование и бизнес</span>
+        </div>
+
+        <div class="tool-panel panel-4">
+          <strong>Сайты</strong>
+          <span>интерактивные проекты</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- =====================================================
+         СЕКЦИЯ "ОБО МНЕ"
+    ===================================================== -->
+    <section class="section" id="about" aria-labelledby="about-title" data-section-theme="0">
+      <div class="section-transition" aria-hidden="true"></div>
+
+      <div class="page-shell">
+        <span class="soft-label">личный бренд + искусственный интеллект</span>
+        <h2 class="section-title" id="about-title">Обо мне</h2>
+        <p class="section-subtitle">
+          В основе моих проектов — смысл, стиль, структура и умение показать идею так, чтобы она запомнилась.
+        </p>
+
+        <div class="about-grid">
+          <article class="avatar-card card">
+            <div>
+              <div class="avatar-wrap">
+                <!-- AVATAR_PLACEHOLDER: путь к локальному файлу, например images/avatar.jpg -->
+                <img src="images/avatar.jpg" alt="Аватар автора портфолио">
+              </div>
+              <p class="avatar-caption">ИИ усиливает идею, а человек задаёт смысл, стиль и цель.</p>
+            </div>
+          </article>
+
+          <article class="about-card card">
+            <!-- ABOUT_TEXT_PLACEHOLDER: 3–4 предложения о специалисте, его увлечениях и инструментах -->
+            <p>
+              Меня зовут Маргарита Лебедева. Я учитель английского языка и специалист по искусственному интеллекту. Я создаю образовательный и деловой контент с использованием искусственного интеллекта:
+              изображения, видеоролики, презентации, сайты и визуальные материалы для выступлений.
+            </p>
+            <p>
+              Моя задача — сделать информацию современной, понятной и визуально сильной.
+              Я использую ИИ как инструмент профессиональной подачи, который помогает быстрее превращать идею в готовый продукт.
+            </p>
+            <p>
+              В каждом проекте я работаю со смыслом, цветом, композицией, динамикой и впечатлением, чтобы результат выглядел уверенно и дорого.
+            </p>
+
+            <div class="skill-pills" aria-label="Навыки и направления">
+              <span>AI-изображения</span>
+              <span>Видео и монтаж</span>
+              <span>Презентации</span>
+              <span>Сайты</span>
+              <span>Промпты и идеи</span>
+            </div>
+
+            <div class="mini-stats" aria-label="Направления портфолио">
+              <div class="mini-stat">
+                <strong>AI</strong>
+                <span>визуальный стиль</span>
+              </div>
+              <div class="mini-stat">
+                <strong>Edu</strong>
+                <span>образование</span>
+              </div>
+              <div class="mini-stat">
+                <strong>Biz</strong>
+                <span>деловая подача</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         СЕКЦИЯ "МОЙ ВИЗУАЛ"
+    ===================================================== -->
+    <section class="section" id="images" aria-labelledby="images-title" data-section-theme="1">
+      <div class="section-transition" aria-hidden="true"></div>
+
+      <div class="page-shell">
+        <span class="soft-label">визуальные AI-работы</span>
+        <h2 class="section-title" id="images-title">Мой визуал</h2>
+        <p class="section-subtitle"></p>
+
+        <div class="carousel-frame">
+          <div class="carousel-zone">
+            <button class="carousel-button prev" type="button" data-carousel="images-carousel" data-direction="-1" aria-label="Прокрутить картинки влево">‹</button>
+
+            <div class="carousel" id="images-carousel" data-theme-carousel aria-label="Карусель картинок">
+              <!-- IMAGES_CAROUSEL_ITEMS: все картинки в папке images/works/ -->
+              <figure class="work-card card">
+                <img src="images/works/work1.jpg" alt="Работа 1">
+                <figcaption></figcaption>
+              </figure>
+
+              <figure class="work-card card">
+                <img src="images/works/work2.jpg" alt="Работа 2">
+                <figcaption></figcaption>
+              </figure>
+
+              <figure class="work-card card">
+                <img src="images/works/work3.jpg" alt="Работа 3">
+                <figcaption></figcaption>
+              </figure>
+
+              <figure class="work-card card">
+                <img src="images/works/work4.jpg" alt="Работа 4">
+                <figcaption></figcaption>
+              </figure>
+
+              <figure class="work-card card">
+                <img src="images/works/work5.jpg" alt="Работа 5">
+                <figcaption></figcaption>
+              </figure>
+            </div>
+
+            <button class="carousel-button next" type="button" data-carousel="images-carousel" data-direction="1" aria-label="Прокрутить картинки вправо">›</button>
+          </div>
+
+          <div class="theme-dots" data-dots-for="images-carousel" aria-label="Индикаторы картинок"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =====================================================
+         СЕКЦИЯ "МОИ ВИДЕО": 2 МЕСТА ПОД ВИДЕО
+    ===================================================== -->
+    <section class="section" id="videos" aria-labelledby="videos-title" data-section-theme="2">
+      <div class="section-transition" aria-hidden="true"></div>
+
+      <div class="page-shell">
+        <span class="soft-label">ролики, монтаж, движение</span>
+        <h2 class="section-title" id="videos-title">Мои видео</h2>
+        <p class="section-subtitle">
+          Я создаю ролики, монтирую их и добавляю эффекты.
+        </p>
+
+        <div class="carousel-frame">
+          <div class="carousel-zone">
+            <button class="carousel-button prev" type="button" data-carousel="videos-carousel" data-direction="-1" aria-label="Прокрутить видео влево">‹</button>
+
+            <div class="carousel" id="videos-carousel" data-theme-carousel aria-label="Карусель видео">
+              <!-- VIDEO_ITEMS: видео в videos/, превью в videos/previews/ -->
+              <div class="video-card card" data-video="videos/video1.mp4" role="button" tabindex="0" aria-label="Открыть видео 1">
+                <img src="videos/previews/preview1.jpg" alt="Превью видео 1">
+                <span class="play-badge" aria-hidden="true">▶</span>
+                <div class="video-caption">Самопрезентация</div>
+              </div>
+
+              <div class="video-card card" data-video="videos/video2.mp4" role="button" tabindex="0" aria-label="Открыть видео 2">
+                <img src="videos/previews/preview2.jpg" alt="Превью видео 2">
+                <span class="play-badge" aria-hidden="true">▶</span>
+                <div class="video-caption">Учебное видео</div>
+              </div>
+            </div>
+
+            <button class="carousel-button next" type="button" data-carousel="videos-carousel" data-direction="1" aria-label="Прокрутить видео вправо">›</button>
+          </div>
+
+          <div class="theme-dots" data-dots-for="videos-carousel" aria-label="Индикаторы видео"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         СЕКЦИЯ "МОИ ПРЕЗЕНТАЦИИ": 2 МЕСТА ПОД PDF
+    ===================================================== -->
+    <section class="section" id="presentation" aria-labelledby="presentation-title" data-section-theme="3">
+      <div class="section-transition" aria-hidden="true"></div>
+
+      <div class="page-shell">
+        <span class="soft-label">сильная визуальная подача</span>
+        <h2 class="section-title" id="presentation-title">Мои презентации</h2>
+        <p class="section-subtitle">
+          Создаю образовательные и деловые презентации.
+        </p>
+
+        <div class="presentation-grid">
+          <article class="viewer-card card">
+            <div class="viewer-header">
+              <h3 class="viewer-title">Презентация для выступления руководителя</h3>
+              <span class="viewer-tag">PDF</span>
+            </div>
+
+            <!-- PRESENTATION_PLACEHOLDER_1: локальный PDF, например presentations/project1.pdf -->
+            <embed class="pdf-viewer" src="presentations/project1.pdf" type="application/pdf" aria-label="Просмотр презентации 1">
+
+            <div class="viewer-actions">
+              <a class="button" href="presentations/project1.pdf" download>Скачать PDF 1</a>
+            </div>
+          </article>
+
+          <article class="viewer-card card">
+            <div class="viewer-header">
+              <h3 class="viewer-title">Образовательная презентация</h3>
+              <span class="viewer-tag">PDF</span>
+            </div>
+
+            <!-- PRESENTATION_PLACEHOLDER_2: локальный PDF, например presentations/project2.pdf -->
+            <embed class="pdf-viewer" src="presentations/project2.pdf" type="application/pdf" aria-label="Просмотр презентации 2">
+
+            <div class="viewer-actions">
+              <a class="button" href="presentations/project2.pdf" download>Скачать PDF 2</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         СЕКЦИЯ "МОИ ПРОЕКТЫ"
+    ===================================================== -->
+    <section class="section" id="projects" aria-labelledby="projects-title" data-section-theme="4">
+      <div class="section-transition" aria-hidden="true"></div>
+
+      <div class="page-shell">
+        <span class="soft-label">интерактивные web-проекты</span>
+        <h2 class="section-title" id="projects-title">Мои проекты</h2>
+        <p class="section-subtitle">
+          Сайты.
+        </p>
+
+        <article class="viewer-card card">
+          <div class="viewer-header">
+            <h3 class="viewer-title">Интерактивный сайт</h3>
+            <span class="viewer-tag">WEB</span>
+          </div>
+
+          <!-- PROJECT_IFRAME_PLACEHOLDER: вставьте URL ранее созданного сайта -->
+          <iframe class="project-frame" src="oge-trenager.html " title="Мой проект"></iframe>
+
+          <div class="viewer-actions">
+            <a class="button" href="oge-trenager.html" target="_blank" rel="noopener">Открыть в новой вкладке</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================
+       ПОДВАЛ
+  ===================================================== -->
+  <footer class="site-footer">
+    <div class="page-shell">
+      © 2026 <strong>Маргарита Лебедева</strong>. Тел.: 8(965) 322-01-55.
+      marglebedeva@yandex.ru
+    </div>
+  </footer>
+
+  <!-- =====================================================
+       МОДАЛЬНОЕ ОКНО ДЛЯ КАРТИНОК
+  ===================================================== -->
+  <div class="modal" id="image-modal" aria-hidden="true" role="dialog" aria-label="Просмотр картинки">
+    <div class="modal-content">
+      <button class="modal-close" type="button" data-close-modal aria-label="Закрыть окно">✕</button>
+      <img id="modal-image" src="" alt="">
+    </div>
+  </div>
+
+  <!-- =====================================================
+       МОДАЛЬНОЕ ОКНО ДЛЯ ВИДЕО
+  ===================================================== -->
+  <div class="modal" id="video-modal" aria-hidden="true" role="dialog" aria-label="Просмотр видео">
+    <div class="modal-content">
+      <button class="modal-close" type="button" data-close-modal aria-label="Закрыть окно">✕</button>
+      <video id="modal-video" controls autoplay></video>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================
+       ЦВЕТОВЫЕ СЦЕНЫ: МЕНЯЮТСЯ ПРИ СКРОЛЛЕ И ПЕРЕЛИСТЫВАНИИ
+    ===================================================== */
+    const colorThemes = [
+      { a: "#7C3AED", b: "#22D3EE", c: "#D1FAE5", glow: "rgba(124, 58, 237, 0.42)" },
+      { a: "#DB2777", b: "#F59E0B", c: "#FCE7F3", glow: "rgba(219, 39, 119, 0.42)" },
+      { a: "#2563EB", b: "#14B8A6", c: "#DBEAFE", glow: "rgba(37, 99, 235, 0.42)" },
+      { a: "#9333EA", b: "#A3E635", c: "#EDE9FE", glow: "rgba(147, 51, 234, 0.42)" },
+      { a: "#0F766E", b: "#38BDF8", c: "#D1FAE5", glow: "rgba(15, 118, 110, 0.42)" }
+    ];
+
+    function applyTheme(index) {
+      const theme = colorThemes[index % colorThemes.length];
+      const root = document.documentElement;
+
+      root.style.setProperty("--theme-a", theme.a);
+      root.style.setProperty("--theme-b", theme.b);
+      root.style.setProperty("--theme-c", theme.c);
+      root.style.setProperty("--theme-glow", theme.glow);
+    }
+
+    applyTheme(0);
+
+    /* =====================================================
+       ОБЪЕКТЫ И КРАПИНКИ ТОЛЬКО ПО КРАЯМ
+    ===================================================== */
+    const edgeDecor = document.getElementById("edge-decor");
+    const symbols = ["AI", "✦", "◆", "◇", "✧", "▣", "◎", "⌁"];
+    const dotColors = ["#7C3AED", "#22D3EE", "#D1FAE5", "#DB2777", "#F59E0B"];
+
+    function createEdgeObjects() {
+      for (let index = 0; index < 20; index += 1) {
+        const object = document.createElement("span");
+        const isLeft = index % 2 === 0;
+        const size = 34 + (index % 5) * 11;
+        const top = 4 + ((index * 13) % 88);
+        const sideOffset = 1 + ((index * 7) % 7);
+        const x = isLeft ? sideOffset : 100 - sideOffset;
+        const moveX = isLeft ? `${18 + (index % 4) * 8}px` : `${-18 - (index % 4) * 8}px`;
+        const moveY = index % 3 === 0 ? "-42px" : "36px";
+
+        object.className = "edge-object";
+        object.dataset.symbol = symbols[index % symbols.length];
+        object.style.left = `${x}%`;
+        object.style.top = `${top}%`;
+        object.style.setProperty("--size", `${size}px`);
+        object.style.setProperty("--shape-radius", index % 3 === 0 ? "50%" : "18px");
+        object.style.setProperty("--rotate", `${(index % 7) * 8 - 24}deg`);
+        object.style.setProperty("--move-x", moveX);
+        object.style.setProperty("--move-y", moveY);
+        object.style.setProperty("--duration", `${6.8 + (index % 6) * 1.2}s`);
+        object.style.setProperty("--delay", `${-index * 0.55}s`);
+
+        edgeDecor.appendChild(object);
+      }
+    }
+
+    function createEdgeDots() {
+      for (let index = 0; index < 90; index += 1) {
+        const dot = document.createElement("span");
+        const isLeft = index % 2 === 0;
+        const x = isLeft ? (Math.random() * 9) : (91 + Math.random() * 9);
+        const size = 2 + (index % 5);
+        const moveX = isLeft ? `${18 + (index % 8) * 4}px` : `${-18 - (index % 8) * 4}px`;
+
+        dot.className = "edge-dot";
+        dot.style.left = `${x}%`;
+        dot.style.setProperty("--dot", `${size}px`);
+        dot.style.setProperty("--dot-color", dotColors[index % dotColors.length]);
+        dot.style.setProperty("--move-x", moveX);
+        dot.style.setProperty("--duration", `${9 + (index % 9) * 1.15}s`);
+        dot.style.setProperty("--delay", `${-index * 0.38}s`);
+
+        edgeDecor.appendChild(dot);
+      }
+    }
+
+    createEdgeObjects();
+    createEdgeDots();
+    const centerDecor = document.getElementById("center-decor");
+
+    function createCenterDecor() {
+      const orbSpecs = [
+        { left: 44, top: 14, size: 74, moveX: 18, moveY: -20, duration: 8.4, delay: -0.5 },
+        { left: 57, top: 24, size: 96, moveX: -14, moveY: 22, duration: 10.2, delay: -1.8 },
+        { left: 49, top: 40, size: 58, moveX: 20, moveY: 18, duration: 7.6, delay: -2.2 },
+        { left: 60, top: 56, size: 88, moveX: -18, moveY: -18, duration: 11.2, delay: -3.1 },
+        { left: 43, top: 70, size: 64, moveX: 24, moveY: -16, duration: 8.8, delay: -1.4 },
+        { left: 55, top: 82, size: 106, moveX: -12, moveY: 16, duration: 12.4, delay: -4.4 }
+      ];
+
+      orbSpecs.forEach((spec) => {
+        const orb = document.createElement("span");
+        orb.className = "float-orb";
+        orb.style.left = `${spec.left}%`;
+        orb.style.top = `${spec.top}%`;
+        orb.style.setProperty("--size", `${spec.size}px`);
+        orb.style.setProperty("--move-x", `${spec.moveX}px`);
+        orb.style.setProperty("--move-y", `${spec.moveY}px`);
+        orb.style.setProperty("--duration", `${spec.duration}s`);
+        orb.style.setProperty("--delay", `${spec.delay}s`);
+        centerDecor.appendChild(orb);
+      });
+
+      const shardSpecs = [
+        { left: 50, top: 20, w: 110, h: 62, rotate: -10, moveX: 14, moveY: -12, duration: 9.6, delay: -1.1 },
+        { left: 66, top: 34, w: 138, h: 74, rotate: 8, moveX: -18, moveY: 14, duration: 11.8, delay: -3.2 },
+        { left: 38, top: 52, w: 124, h: 68, rotate: -6, moveX: 16, moveY: 14, duration: 10.6, delay: -2.4 },
+        { left: 61, top: 72, w: 120, h: 66, rotate: 10, moveX: -14, moveY: -18, duration: 12.8, delay: -4.1 }
+      ];
+
+      shardSpecs.forEach((spec) => {
+        const shard = document.createElement("span");
+        shard.className = "data-shard";
+        shard.style.left = `${spec.left}%`;
+        shard.style.top = `${spec.top}%`;
+        shard.style.setProperty("--w", `${spec.w}px`);
+        shard.style.setProperty("--h", `${spec.h}px`);
+        shard.style.setProperty("--rotate", `${spec.rotate}deg`);
+        shard.style.setProperty("--move-x", `${spec.moveX}px`);
+        shard.style.setProperty("--move-y", `${spec.moveY}px`);
+        shard.style.setProperty("--duration", `${spec.duration}s`);
+        shard.style.setProperty("--delay", `${spec.delay}s`);
+        centerDecor.appendChild(shard);
+      });
+
+      const ringSpecs = [
+        { left: 53, top: 32, size: 170, moveX: 10, moveY: -10, duration: 12.6, delay: -2.7 },
+        { left: 47, top: 62, size: 132, moveX: -8, moveY: 12, duration: 10.8, delay: -1.3 }
+      ];
+
+      ringSpecs.forEach((spec) => {
+        const ring = document.createElement("span");
+        ring.className = "energy-ring";
+        ring.style.left = `${spec.left}%`;
+        ring.style.top = `${spec.top}%`;
+        ring.style.setProperty("--size", `${spec.size}px`);
+        ring.style.setProperty("--move-x", `${spec.moveX}px`);
+        ring.style.setProperty("--move-y", `${spec.moveY}px`);
+        ring.style.setProperty("--duration", `${spec.duration}s`);
+        ring.style.setProperty("--delay", `${spec.delay}s`);
+        centerDecor.appendChild(ring);
+      });
+    }
+
+    createCenterDecor();
+
+    /* =====================================================
+       ИНТЕРАКТИВНЫЙ КУРСОР-СВЕЧЕНИЕ
+    ===================================================== */
+    const cursorGlow = document.getElementById("cursor-glow");
+
+    document.addEventListener("pointermove", (event) => {
+      cursorGlow.style.left = `${event.clientX}px`;
+      cursorGlow.style.top = `${event.clientY}px`;
+    });
+
+    /* =====================================================
+       ПОЯВЛЕНИЕ СЕКЦИЙ И СМЕНА ТЕМ ПРИ СКРОЛЛЕ
+    ===================================================== */
+    const sections = document.querySelectorAll(".section");
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+        }
+      });
+    }, {
+      threshold: 0.16
+    });
+
+    sections.forEach((section) => revealObserver.observe(section));
+
+    const sectionThemeObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const themeIndex = Number(entry.target.dataset.sectionTheme || 0);
+          applyTheme(themeIndex);
+        }
+      });
+    }, {
+      rootMargin: "-35% 0px -52% 0px",
+      threshold: 0
+    });
+
+    sections.forEach((section) => sectionThemeObserver.observe(section));
+
+    /* =====================================================
+       ПОДСВЕТКА АКТИВНОГО ПУНКТА МЕНЮ
+    ===================================================== */
+    const navLinks = document.querySelectorAll(".nav-link");
+    const sectionMap = new Map();
+
+    navLinks.forEach((link) => {
+      const targetId = link.getAttribute("href");
+      const targetSection = document.querySelector(targetId);
+
+      if (targetSection) {
+        sectionMap.set(targetSection.id, link);
+      }
+    });
+
+    const activeNavObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          navLinks.forEach((link) => link.classList.remove("is-active"));
+
+          const activeLink = sectionMap.get(entry.target.id);
+          if (activeLink) {
+            activeLink.classList.add("is-active");
+          }
+        }
+      });
+    }, {
+      rootMargin: "-36% 0px -56% 0px",
+      threshold: 0
+    });
+
+    sections.forEach((section) => activeNavObserver.observe(section));
+
+    /* =====================================================
+       КАРУСЕЛИ: ПРОКРУТКА, ИНДИКАТОРЫ, СМЕНА ЦВЕТОВ
+    ===================================================== */
+    const carouselButtons = document.querySelectorAll("[data-carousel]");
+    const themeCarousels = document.querySelectorAll("[data-theme-carousel]");
+
+    function getCards(carousel) {
+      return Array.from(carousel.children).filter((item) => item.classList.contains("card"));
+    }
+
+    function getActiveCardIndex(carousel) {
+      const cards = getCards(carousel);
+      const carouselCenter = carousel.scrollLeft + carousel.clientWidth / 2;
+
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      cards.forEach((card, index) => {
+        const cardCenter = card.offsetLeft + card.clientWidth / 2;
+        const distance = Math.abs(carouselCenter - cardCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      return closestIndex;
+    }
+
+    function updateDots(carousel) {
+      const dotsContainer = document.querySelector(`[data-dots-for="${carousel.id}"]`);
+      if (!dotsContainer) {
+        return;
+      }
+
+      const activeIndex = getActiveCardIndex(carousel);
+      const dots = dotsContainer.querySelectorAll(".theme-dot");
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("is-active", index === activeIndex);
+      });
+    }
+
+    function setupDots(carousel) {
+      const dotsContainer = document.querySelector(`[data-dots-for="${carousel.id}"]`);
+      if (!dotsContainer) {
+        return;
+      }
+
+      const cards = getCards(carousel);
+
+      cards.forEach((card, index) => {
+        const dot = document.createElement("button");
+        dot.className = "theme-dot";
+        dot.type = "button";
+        dot.setAttribute("aria-label", `Перейти к элементу ${index + 1}`);
+
+        dot.addEventListener("click", () => {
+          card.scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "nearest"
+          });
+          applyTheme(index);
+          setTimeout(() => updateDots(carousel), 350);
+        });
+
+        dotsContainer.appendChild(dot);
+      });
+
+      updateDots(carousel);
+    }
+
+    themeCarousels.forEach((carousel) => {
+      setupDots(carousel);
+
+      carousel.addEventListener("scroll", () => {
+        const activeIndex = getActiveCardIndex(carousel);
+        applyTheme(activeIndex);
+        updateDots(carousel);
+      }, { passive: true });
+    });
+
+    carouselButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const carouselId = button.dataset.carousel;
+        const direction = Number(button.dataset.direction);
+        const carousel = document.getElementById(carouselId);
+
+        if (carousel) {
+          const scrollDistance = Math.min(carousel.clientWidth * 0.88, 470);
+          carousel.scrollBy({
+            left: scrollDistance * direction,
+            behavior: "smooth"
+          });
+
+          setTimeout(() => {
+            const activeIndex = getActiveCardIndex(carousel);
+            applyTheme(activeIndex);
+            updateDots(carousel);
+          }, 420);
+        }
+      });
+    });
+
+    /* =====================================================
+       3D-HOVER ДЛЯ КАРТОЧЕК
+    ===================================================== */
+    const tiltCards = document.querySelectorAll(".card");
+
+    tiltCards.forEach((card) => {
+      card.addEventListener("mousemove", (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const rotateY = ((x / rect.width) - 0.5) * 5;
+        const rotateX = ((y / rect.height) - 0.5) * -5;
+
+        card.style.transform = `translateY(-6px) perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "";
+      });
+    });
+
+    /* =====================================================
+       МОДАЛЬНЫЕ ОКНА: ОТКРЫТИЕ И ЗАКРЫТИЕ
+    ===================================================== */
+    const imageModal = document.getElementById("image-modal");
+    const videoModal = document.getElementById("video-modal");
+    const modalImage = document.getElementById("modal-image");
+    const modalVideo = document.getElementById("modal-video");
+
+    function openModal(modal) {
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeImageModal() {
+      imageModal.classList.remove("is-open");
+      imageModal.setAttribute("aria-hidden", "true");
+      modalImage.src = "";
+      modalImage.alt = "";
+      document.body.style.overflow = "";
+    }
+
+    function closeVideoModal() {
+      videoModal.classList.remove("is-open");
+      videoModal.setAttribute("aria-hidden", "true");
+      modalVideo.pause();
+      modalVideo.currentTime = 0;
+      modalVideo.removeAttribute("src");
+      modalVideo.load();
+      document.body.style.overflow = "";
+    }
+
+    function closeAllModals() {
+      if (imageModal.classList.contains("is-open")) {
+        closeImageModal();
+      }
+
+      if (videoModal.classList.contains("is-open")) {
+        closeVideoModal();
+      }
+    }
+
+    document.querySelectorAll(".work-card img").forEach((image) => {
+      image.addEventListener("click", () => {
+        modalImage.src = image.src;
+        modalImage.alt = image.alt;
+        openModal(imageModal);
+      });
+    });
+
+    document.querySelectorAll(".video-card").forEach((card) => {
+      const openVideo = () => {
+        const videoSrc = card.dataset.video;
+
+        if (videoSrc) {
+          modalVideo.src = videoSrc;
+          openModal(videoModal);
+          modalVideo.play();
+        }
+      };
+
+      card.addEventListener("click", openVideo);
+
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openVideo();
+        }
+      });
+    });
+
+    document.querySelectorAll("[data-close-modal]").forEach((button) => {
+      button.addEventListener("click", closeAllModals);
+    });
+
+    [imageModal, videoModal].forEach((modal) => {
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          closeAllModals();
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeAllModals();
+      }
+    });
+  </script>
+</body>
+</html>
