@@ -2936,26 +2936,30 @@
       });
     });
 
-    document.querySelectorAll(".video-card").forEach((card) => {
-      const openVideo = () => {
-        const videoSrc = card.dataset.video;
+   document.querySelectorAll(".video-card").forEach((card) => {
+  if (card.tagName.toLowerCase() === "a") {
+    return;
+  }
 
-        if (videoSrc) {
-          modalVideo.src = videoSrc;
-          openModal(videoModal);
-          modalVideo.play();
-        }
-      };
+  const openVideo = () => {
+    const videoSrc = card.dataset.video;
 
-      card.addEventListener("click", openVideo);
+    if (videoSrc) {
+      modalVideo.src = videoSrc;
+      openModal(videoModal);
+      modalVideo.play();
+    }
+  };
 
-      card.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          openVideo();
-        }
-      });
-    });
+  card.addEventListener("click", openVideo);
+
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openVideo();
+    }
+  });
+});
 
     document.querySelectorAll("[data-close-modal]").forEach((button) => {
       button.addEventListener("click", closeAllModals);
